@@ -12,12 +12,11 @@ namespace fs = std::filesystem;
 
 #define PORT 8080
 #define BUFFER_SIZE 1024 
-#define CORRECT_PASSWORD "shreyaCrypt" // The password we expect
+#define CORRECT_PASSWORD "shreyaCrypt" 
 
-// --- Helper function to handle download request ---
+//Helper function to handle download request 
 void handle_download(int new_socket) {
-    // (Code from Day 4 - No changes needed)
-    // ... (rest of the function is identical to previous step) ...
+    
     char buffer[BUFFER_SIZE] = {0};
 
     std::stringstream file_list_stream;
@@ -62,10 +61,9 @@ void handle_download(int new_socket) {
     }
 }
 
-// --- Helper function to handle upload request ---
+// Helper function to handle upload request 
 void handle_upload(int new_socket) {
-    // (Code from Day 4 - No changes needed)
-    // ... (rest of the function is identical to previous step) ...
+    
     char buffer[BUFFER_SIZE] = {0};
 
     memset(buffer, 0, sizeof(buffer));
@@ -135,28 +133,22 @@ int main() {
         }
         std::cout << "Client connected! Waiting for password..." << std::endl;
 
-        // --- NEW DAY 5 LOGIC ---
-
-        // 1. Read the password from the client
+        // Read the password from the client
         memset(buffer, 0, sizeof(buffer));
         read(new_socket, buffer, 1024);
 
         if (strcmp(buffer, CORRECT_PASSWORD) != 0) {
-            // Wrong password
+            
             std::cout << "Authentication failed. Disconnecting client." << std::endl;
             send(new_socket, "AUTH_FAILED: Wrong password", 26, 0);
             close(new_socket);
             continue; // Go back to accept()
         }
 
-        // Correct password
         std::cout << "Authentication successful!" << std::endl;
         send(new_socket, "AUTH_OK", 7, 0);
 
-        // --- END NEW DAY 5 LOGIC ---
-
-
-        // --- DAY 4 LOGIC (Now runs *after* auth) ---
+        
         memset(buffer, 0, sizeof(buffer));
         read(new_socket, buffer, 1024);
         
@@ -169,7 +161,7 @@ int main() {
         } else {
             std::cerr << "Unknown command: " << buffer << std::endl;
         }
-        // --- END DAY 4 LOGIC ---
+
         
         std::cout << "Client disconnected." << std::endl;
         close(new_socket); 

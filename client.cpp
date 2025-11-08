@@ -8,12 +8,11 @@
 
 #define PORT 8080
 #define BUFFER_SIZE 1024
-#define PASSWORD "shreyaCrypt" // The password we'll send
+#define PASSWORD "shreyaCrypt" 
 
-// --- Helper function to handle download ---
+//Helper function to handle download 
 void handle_download(int sock, const std::string& filename) {
-    // (Code from Day 4 - No changes needed)
-    // ... (rest of the function is identical to previous step) ...
+    
     std::cout << "Requested file: " << filename << std::endl;
     char buffer[BUFFER_SIZE] = {0};
 
@@ -40,8 +39,7 @@ void handle_download(int sock, const std::string& filename) {
 
 // --- Helper function to handle upload ---
 void handle_upload(int sock, const std::string& filename) {
-    // (Code from Day 4 - No changes needed)
-    // ... (rest of the function is identical to previous step) ...
+    
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open local file " << filename << std::endl;
@@ -97,13 +95,11 @@ int main() {
 
     std::cout << "Connected to server!" << std::endl;
 
-    // --- NEW DAY 5 LOGIC ---
-    
-    // 1. Send the password immediately
+    // Send the password immediately
     std::cout << "Sending password..." << std::endl;
     send(sock, PASSWORD, strlen(PASSWORD), 0);
 
-    // 2. Wait for authentication reply
+    // Wait for authentication reply
     memset(buffer, 0, sizeof(buffer));
     read(sock, buffer, 1024);
 
@@ -115,10 +111,6 @@ int main() {
     
     std::cout << "Authentication successful!" << std::endl;
 
-    // --- END NEW DAY 5 LOGIC ---
-
-
-    // --- DAY 4 LOGIC (Now runs *after* auth) ---
     std::string command;
     std::cout << "Enter command (upload / download): ";
     std::getline(std::cin, command);
@@ -147,7 +139,6 @@ int main() {
     } else {
         std::cerr << "Invalid command." << std::endl;
     }
-    // --- END DAY 4 LOGIC ---
 
     close(sock);
     return 0;
